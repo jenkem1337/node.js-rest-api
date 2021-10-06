@@ -7,5 +7,4 @@ app.use(express.json())
 app.use('/api', UserRouter)
 
 
-app.listen(3333 , () => console.log('listening port on 3333')
-)
+app.listen(3333 , () => console.log('listening port on 3333'))
