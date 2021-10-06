@@ -1,59 +1,59 @@
-const userDao = require('../data_access/userDao')
+class UserController{
 
-const findAllUser = async(req,res) => {
-    const allUser = await userDao.findAll()
-    res.send(allUser)
-}
-
-
-const findById = async(req,res) => {
-    const {id} = req.params
-    let idNum = parseInt(id)
-    const user = await userDao.findById(idNum)
-    if(!user){
-        res.send({'message': "this user doesnt exist in database"})
+    constructor(userDao){
+        this.userDao = userDao
     }
-    res.send(user)
-}
 
-const addUser = async (req,res) => {
-    const {firstName,lastName, email} = req.body
-    const newUser = await userDao.addUser(firstName,lastName, email)
-    res.send({"user added to database": newUser})
-
-}
-
-const updateUserById = async (req,res) => {
-    const {firstName,lastName, email} = req.body
-    const {id} = req.params
-    let idNum = parseInt(id)
-    const user = await userDao.findById(idNum)
+    findAllUser = async(req,res) => {
+        const allUser = await this.userDao.findAll()
+        res.send(allUser)
+    }
     
-    if(!user){
-        res.send({'message': "this user doesnt exist in database"})
-    }
-
-    const updatedUser = await userDao.updateUserById(idNum, firstName,lastName, email)
-    res.send({"user updated": updatedUser})
-}
-
-const removeUserById = async (req,res) => {
-    const {id} = req.params
-    let idNum = parseInt(id)
-    const user = await userDao.findById(idNum)
     
-    if(!user){
-        res.send({'message': "this user doesnt exist in database"})
+    findById = async(req,res) => {
+        const {id} = req.params
+        let idNum = parseInt(id)
+        const user = await this.userDao.findById(idNum)
+        if(!user){
+            res.send({'message': "this user doesnt exist in database"})
+        }
+        res.send(user)
     }
-
-    await userDao.removeUserById(idNum)
-    res.send({"user deleted from database": user})
+    
+    addUser = async (req,res) => {
+        const {firstName,lastName, email} = req.body
+        const newUser = await this.userDao.addUser(firstName,lastName, email)
+        res.send({"user added to database": newUser})
+    
+    }
+    
+    updateUserById = async (req,res) => {
+        const {firstName,lastName, email} = req.body
+        const {id} = req.params
+        let idNum = parseInt(id)
+        const user = await this.userDao.findById(idNum)
+        
+        if(!user){
+            res.send({'message': "this user doesnt exist in database"})
+        }
+    
+        const updatedUser = await this.userDao.updateUserById(idNum, firstName,lastName, email)
+        res.send({"user updated": updatedUser})
+    }
+    
+    removeUserById = async (req,res) => {
+        const {id} = req.params
+        let idNum = parseInt(id)
+        const user = await this.userDao.findById(idNum)
+        
+        if(!user){
+            res.send({'message': "this user doesnt exist in database"})
+        }
+    
+        await this.userDao.removeUserById(idNum)
+        res.send({"user deleted from database": user})
+    }
+    
 }
 
-module.exports = {
-    findAllUser,
-    findById,
-    addUser,
-    updateUserById,
-    removeUserById,
-}
+module.exports = UserController
